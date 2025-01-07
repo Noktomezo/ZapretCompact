@@ -1,11 +1,9 @@
 @echo off
 
-set SCRIPTS=%~dp0scripts
+set HOSTS=%~dp0hosts
 set FILES=%~dp0files
-set DISPLAY_NAME="Zapret Compact Edition (by Noktomezo)"
-set DESCRIPTION="Bypasses DPI, Humiliates Roskomnadzor"
 
-%FILES%\nssm.exe install ZapretCompact "%FILES%\winws.exe" ^
+(%FILES%\nssm.exe install ZapretCompact "%FILES%\winws.exe" ^
 --wf-tcp=80,443 --wf-udp=443,50000-50099 ^
 --filter-tcp=80 --dpi-desync=fake,fakedsplit --dpi-desync-autottl=2 --dpi-desync-fooling=md5sig --new ^
 --filter-tcp=443 --hostlist="%HOSTS%\list-youtube.txt" --dpi-desync=fake,multidisorder --dpi-desync-split-pos=1,midsld --dpi-desync-repeats=11 --dpi-desync-fooling=md5sig --dpi-desync-fake-tls="%FILES%\tls_clienthello_www_google_com.bin" --new ^
@@ -14,9 +12,9 @@ set DESCRIPTION="Bypasses DPI, Humiliates Roskomnadzor"
 --filter-udp=443 --dpi-desync=fake --dpi-desync-repeats=11 --new ^
 --filter-udp=50000-50099 --ipset="%HOSTS%\ipset-discord.txt" --dpi-desync=fake --dpi-desync-repeats=6 --dpi-desync-any-protocol --dpi-desync-cutoff=n4--dpi-desync-any-protocol --dpi-desync-cutoff=n4
 
-%FILES%\nssm.exe set ZapretCompact DisplayName %DISPLAY_NAME%
-%FILES%\nssm.exe set ZapretCompact Description %DESCRIPTION%
-%FILES%\nssm.exe set ZapretCompact ImagePath %FILES%\winws.exe
+%FILES%\nssm.exe set ZapretCompact DisplayName Zapret Compact Edition
+%FILES%\nssm.exe set ZapretCompact Description Bypasses DPI
 %FILES%\nssm.exe set ZapretCompact Start SERVICE_AUTO_START
 %FILES%\nssm.exe set ZapretCompact AppAffinity 1
-%FILES%\nssm.exe start ZapretCompact
+
+%FILES%\nssm.exe start ZapretCompact) >nul 2>&1
