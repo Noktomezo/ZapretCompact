@@ -1,10 +1,20 @@
 @echo off
 
+chcp 65001 >nul 2>&1
+
 set FILES=%~dp0files
 
-(%FILES%\nssm.exe set ZapretCompact start SERVICE_DISABLED
-%FILES%\nssm.exe stop ZapretCompact
-%FILES%\nssm.exe remove ZapretCompact confirm
+echo ┌→ Удаление службы ZapretCompact...
 
-sc stop WinDivert
-sc delete WinDivert) >nul 2>&1
+%FILES%\nssm.exe set ZapretCompact start SERVICE_DISABLED >nul 2>&1
+%FILES%\nssm.exe stop ZapretCompact >nul 2>&1
+%FILES%\nssm.exe remove ZapretCompact confirm >nul 2>&1
+
+echo ├→ Удаление службы WinDivert...
+
+sc stop WinDivert >nul 2>&1
+sc delete WinDivert >nul 2>&1
+
+echo └→ Службы удалены
+
+pause
