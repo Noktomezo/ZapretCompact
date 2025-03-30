@@ -7,10 +7,13 @@
 🍃&nbsp; Оставлены только необходимые бинарники<br>
 🧹&nbsp; Автоматическая остановка сервиса `WinDivert` при закрытии программы<br>
 💾&nbsp; Установкой/удалением сервиса теперь занимается [nssm](https://nssm.cc/)<br>
-⛑️&nbsp; Сохранён оригинальный функционал (т.е будет работать не только YouTube и Discord, но и [всё остальное](https://reestr.rublacklist.net/api/v3/domains/))<br>
+⛑️&nbsp; Работает точечно по всем заблокированным доменам/сайтам
 
 ## Скачать
 💾&nbsp; [тык](https://github.com/Noktomezo/ZapretCompact/archive/refs/heads/main.zip)<br>
 
 ## Источники
-<a href="https://github.com/bol-van/zapret-win-bundle">zapret-win-bundle</a>
+- [zapret-win-bundle](https://github.com/bol-van/zapret-win-bundle)
+- [antifilter.download](https://antifilter.download/)
+- [community.antifilter.download](https://community.antifilter.download/)
+- [re:filter](https://github.com/1andrevich/Re-filter-lists)
