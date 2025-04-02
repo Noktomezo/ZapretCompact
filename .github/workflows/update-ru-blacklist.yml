@@ -1,7 +1,7 @@
 name: Update RU Blacklist
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */3 * * *"
   workflow_dispatch:
 
 jobs:
@@ -29,4 +29,8 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
           git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update blacklist" && git pull --rebase && git push origin HEAD:${{ github.ref }})
+          git diff --quiet && git diff --staged --quiet || (
+            git commit -m "chore: update blacklist"
+            git pull --rebase
+            git push origin HEAD:${{ github.ref }}
+          )
