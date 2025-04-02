@@ -15,7 +15,7 @@
 2.1) Для автоматического запуска при входе в систему - запустить `service-install.cmd`<br>
 2.2) Для отключения автоматического запуска при входе систему - запустить `service-remove.cmd`
 
-или склонировать через Git:
+или склонировать c помощью [Git](https://git-scm.com/downloads):
 ```bash
 git clone --depth=1 https://github.com/Noktomezo/ZapretCompact.git
 ```
