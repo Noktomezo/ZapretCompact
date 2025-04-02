@@ -10,7 +10,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Make script executable
         run: chmod +x ./scripts/update-ru-blacklist.sh
