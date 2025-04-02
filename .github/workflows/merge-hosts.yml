@@ -1,31 +1,30 @@
-name: Update RU Blacklist
-on:
-  schedule:
-    - cron: "0 */6 * * *"
-  workflow_dispatch:
+name: Merge Hosts
 
-permissions:
-  contents: write
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  update-blacklist:
+  merge-hosts:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Make script executable
-        run: chmod +x ./scripts/update-ru-blacklist.sh
-
-      - name: Run update blacklist script
-        run: ./scripts/update-ru-blacklist.sh
-
-      - name: Commit and push if changed
+      - name: Merge host files
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(blacklist): update blacklist domains" && git push)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          if [ -f hosts/autohostlist.txt ] && [ -s hosts/autohostlist.txt ]; then
+            cat hosts/autohostlist.txt >> hosts/russia-blocked.txt
+            sort -u hosts/russia-blocked.txt -o hosts/russia-blocked.txt
+            rm hosts/autohostlist.txt
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add hosts/russia-blocked.txt
+            git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+            git commit -m "chore: merge autohostlist.txt into russia-blocked.txt"
+            git push -f -u origin main
+          fi
