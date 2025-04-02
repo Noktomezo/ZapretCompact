@@ -26,5 +26,5 @@ jobs:
             git add hosts/russia-blocked.txt
             git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
             git commit -m "chore: merge autohostlist.txt into russia-blocked.txt"
-            git push -f -u origin main
+            git push
           fi
