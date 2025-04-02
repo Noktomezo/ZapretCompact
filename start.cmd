@@ -1,6 +1,8 @@
 @echo off
 
-@set ROOT=%~dp0
-@set SCRIPTS=%ROOT%scripts
-
-powershell -WindowStyle Hidden "%SCRIPTS%\smart-start.ps1" -Verb runAs
+powershell ^
+  -WindowStyle Hidden ^
+  -ExecutionPolicy Bypass ^
+  -NoProfile ^
+  %~dp0scripts\launcher.ps1 JustStart ^
+  -Verb runAs ^
