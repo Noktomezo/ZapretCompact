@@ -1,0 +1,29 @@
+name: Merge Hosts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  merge-hosts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Merge host files
+        run: |
+          if [ -f hosts/autohostlist.txt ] && [ -s hosts/autohostlist.txt ]; then
+            cat hosts/autohostlist.txt >> hosts/russia-blocked.txt
+            sort -u hosts/russia-blocked.txt -o hosts/russia-blocked.txt
+            rm hosts/autohostlist.txt
+            git config --global user.name "GitHub Actions"
+            git config --global user.email "actions@github.com"
+            git add hosts/russia-blocked.txt
+            git commit -m "chore: merge autohostlist into blocked domains database"
+            git push
+          fi
