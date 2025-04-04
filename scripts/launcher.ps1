@@ -26,54 +26,55 @@ switch ($args[0]) {
     if ($service_status -eq "SERVICE_RUNNING") {
       Start-Process powershell.exe {
         Write-Host "ZapretCompact is already running as a service." -ForegroundColor Yellow
-        & cmd /c "pause"
+        & cmd.exe /c "pause"
       }
-      break
+    } else {
+      Start-Process -WindowStyle Minimized $WINWS_EXE $WINWS_ARGS
+      Start-Process -NoNewWindow powershell.exe ${function:Start-WinwsMonitoring}
     }
-
-    Start-Process -WindowStyle Minimized $WINWS_EXE $WINWS_ARGS
-    Start-Process -NoNewWindow powershell.exe ${function:Start-WinwsMonitoring}
   }
   "ServiceInstall" {
     if ($service_status -eq "SERVICE_RUNNING") {
       Write-Host "ZapretCompact is already installed as a service." -ForegroundColor Yellow
       & cmd.exe /c "pause"
-      break
+    } elseif ($service_status -eq "SERVICE_STOPPED") {
+      & sc.exe start "ZapretCompact" >$null 2>&1
+      Write-Host "ZapretCompact service was in a stopped state, but is now running" -ForegroundColor Yellow
+      & cmd.exe /c "pause"
+    } else {
+      Write-Host "Setting up ZapretCompact service..." -ForegroundColor Yellow
+      & $NSSM_EXE install ZapretCompact $WINWS_EXE $WINWS_ARGS >$null 2>&1
+
+      Write-Host "Configuring service properties..." -ForegroundColor Yellow
+      & $NSSM_EXE set ZapretCompact DisplayName Zapret Compact Edition >$null 2>&1
+      & $NSSM_EXE set ZapretCompact Description Bypasses DPI >$null 2>&1
+      & $NSSM_EXE set ZapretCompact Start SERVICE_AUTO_START >$null 2>&1
+      & $NSSM_EXE set ZapretCompact AppAffinity 1 >$null 2>&1
+
+      Write-Host "Starting service ..." -ForegroundColor Yellow
+      & $NSSM_EXE start ZapretCompact >$null 2>&1
+
+      Write-Host "Service setup complete!" -ForegroundColor Green
+      & cmd.exe /c "pause"
     }
-
-    Write-Host "Setting up ZapretCompact service..." -ForegroundColor Yellow
-    & $NSSM_EXE install ZapretCompact $WINWS_EXE $WINWS_ARGS >$null 2>&1
-
-    Write-Host "Configuring service properties..." -ForegroundColor Yellow
-    & $NSSM_EXE set ZapretCompact DisplayName Zapret Compact Edition >$null 2>&1
-    & $NSSM_EXE set ZapretCompact Description Bypasses DPI >$null 2>&1
-    & $NSSM_EXE set ZapretCompact Start SERVICE_AUTO_START >$null 2>&1
-    & $NSSM_EXE set ZapretCompact AppAffinity 1 >$null 2>&1
-
-    Write-Host "Starting service ..." -ForegroundColor Yellow
-    & $NSSM_EXE start ZapretCompact >$null 2>&1
-
-    Write-Host "Service setup complete!" -ForegroundColor Green
-    & cmd.exe /c "pause"
   }
   "ServiceRemove" {
     if ($service_status -ne "SERVICE_RUNNING") {
       Write-Host "ZapretCompact service is not installed." -ForegroundColor Yellow
       & cmd.exe /c "pause"
-      break
+    } else {
+      Write-Host "Removing ZapretCompact service..." -ForegroundColor Yellow
+      & $NSSM_EXE set ZapretCompact start SERVICE_DISABLED >$null 2>&1
+      & $NSSM_EXE stop ZapretCompact >$null 2>&1
+      & $NSSM_EXE remove ZapretCompact confirm >$null 2>&1
+
+      Write-Host "Removing WinDivert service..." -ForegroundColor Yellow
+      & sc.exe stop WinDivert >$null 2>&1
+      & sc.exe delete WinDivert >$null 2>&1
+
+      Write-Host "Service removed!" -ForegroundColor Green
+      & cmd.exe /c "pause"
     }
-
-    Write-Host "Removing ZapretCompact service..." -ForegroundColor Yellow
-    & $NSSM_EXE set ZapretCompact start SERVICE_DISABLED >$null 2>&1
-    & $NSSM_EXE stop ZapretCompact >$null 2>&1
-    & $NSSM_EXE remove ZapretCompact confirm >$null 2>&1
-
-    Write-Host "Removing WinDivert service..." -ForegroundColor Yellow
-    & sc.exe stop WinDivert >$null 2>&1
-    & sc.exe delete WinDivert >$null 2>&1
-
-    Write-Host "Service removed!" -ForegroundColor Green
-    & cmd.exe /c "pause"
   }
   default {
     Write-Host "Unknown action: $args[0]" -ForegroundColor Red
