@@ -37,7 +37,7 @@ switch ($args[0]) {
   "ServiceInstall" {
     if ($service_status -eq "SERVICE_RUNNING") {
       Write-Host "ZapretCompact is already installed as a service."
-      & cmd /c "pause"
+      & cmd.exe /c "pause"
       break
     }
 
@@ -54,12 +54,12 @@ switch ($args[0]) {
     & $NSSM_EXE start ZapretCompact >$null 2>&1
 
     Write-Host "Service setup complete!"
-    & cmd /c "pause"
+    & cmd.exe /c "pause"
   }
   "ServiceRemove" {
     if ($service_status -ne "SERVICE_RUNNING") {
       Write-Host "ZapretCompact service is not installed."
-      & cmd /c "pause"
+      & cmd.exe /c "pause"
       break
     }
 
@@ -73,10 +73,10 @@ switch ($args[0]) {
     & sc.exe delete WinDivert >$null 2>&1
 
     Write-Host "Service removed!"
-    & cmd /c "pause"
+    & cmd.exe /c "pause"
   }
   default {
     Write-Host "Unknown action: $args[0]" -ForegroundColor Red
-    Read-Host -Prompt "Press Enter to continue..."
+    & cmd.exe /c "pause"
   }
 }
