@@ -28,7 +28,8 @@ switch ($args[0]) {
         Write-Host "ZapretCompact is already running as a service." -ForegroundColor Yellow
         & cmd.exe /c "pause"
       }
-    } else {
+    }
+    else {
       Start-Process -WindowStyle Minimized $WINWS_EXE $WINWS_ARGS
       Start-Process -NoNewWindow powershell.exe ${function:Start-WinwsMonitoring}
     }
@@ -37,11 +38,12 @@ switch ($args[0]) {
     if ($service_status -eq "SERVICE_RUNNING") {
       Write-Host "ZapretCompact is already installed as a service." -ForegroundColor Yellow
       & cmd.exe /c "pause"
-    } elseif ($service_status -eq "SERVICE_STOPPED") {
-      & sc.exe start "ZapretCompact" >$null 2>&1
-      Write-Host "ZapretCompact service was in a stopped state, but is now running" -ForegroundColor Yellow
+    }
+    elseif (Get-Process -Name "winws" -ErrorAction SilentlyContinue) {
+      Write-Host "ZapretCompact currently running as a standalone app, close it first" -ForegroundColor Yellow
       & cmd.exe /c "pause"
-    } else {
+    }
+    else {
       Write-Host "Setting up ZapretCompact service..." -ForegroundColor Yellow
       & $NSSM_EXE install ZapretCompact $WINWS_EXE $WINWS_ARGS >$null 2>&1
 
@@ -62,7 +64,8 @@ switch ($args[0]) {
     if ($service_status -ne "SERVICE_RUNNING") {
       Write-Host "ZapretCompact service is not installed." -ForegroundColor Yellow
       & cmd.exe /c "pause"
-    } else {
+    }
+    else {
       Write-Host "Removing ZapretCompact service..." -ForegroundColor Yellow
       & $NSSM_EXE set ZapretCompact start SERVICE_DISABLED >$null 2>&1
       & $NSSM_EXE stop ZapretCompact >$null 2>&1
