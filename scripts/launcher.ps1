@@ -31,7 +31,7 @@ switch ($args[0]) {
     }
     else {
       Start-Process -WindowStyle Minimized $WINWS_EXE $WINWS_ARGS
-      Start-Process -NoNewWindow powershell.exe ${function:Start-WinwsMonitoring}
+      Start-Process -WindowStyle Hidden powershell.exe ${function:Start-WinwsMonitoring}
     }
   }
   "ServiceInstall" {
