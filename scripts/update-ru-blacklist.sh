@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -12,6 +11,8 @@ RE_FILTER_LIST="https://raw.githubusercontent.com/1andrevich/Re-filter-lists/ref
 
 mkdir -p "$(dirname "$OUTPUT_FILE")"
 
+PREV_DOMAIN_COUNT=$(wc -l < "$OUTPUT_FILE")
+
 echo "🔍 Извлечение доменов из API..."
 sort -u \
   <(curl -s "$ANTIFILTER_MAIN_LIST") \
@@ -19,12 +20,18 @@ sort -u \
   <(curl -s "$RE_FILTER_LIST") \
   > "$OUTPUT_FILE"
 
-DOMAIN_COUNT=$(wc -l < "$OUTPUT_FILE")
-echo "💾 Успешно сохранено $DOMAIN_COUNT доменов в $OUTPUT_FILE"
 
-if [ "$DOMAIN_COUNT" -eq 0 ]; then
-  echo "⚠️ Внимание: домены не были извлечены или файл пуст!"
+NEW_DOMAIN_COUNT=$(wc -l < "$OUTPUT_FILE")
+
+(( $NEW_DOMAIN_COUNT > 0 )) || {
+  echo "⚠️ Ошибка: не удалось получить данные ни из одного источника!" >&2
   exit 1
+}
+
+if [ $PREV_DOMAIN_COUNT -ne $NEW_DOMAIN_COUNT ]; then
+  echo "💾 Обновление данных: $NEW_DOMAIN_COUNT → $NEW_DOMAIN_COUNT доменов"
+else
+  echo "ℹ️ Количество доменов не изменилось: $NEW_DOMAIN_COUNT"
 fi
 
 echo "✅ Обновление черного списка успешно завершено."
