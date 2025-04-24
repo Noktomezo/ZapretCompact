@@ -33,4 +33,3 @@ git clone --depth=1 https://github.com/Noktomezo/ZapretCompact.git
 - [community.antifilter.download](https://community.antifilter.download/)
 - [re:filter](https://github.com/1andrevich/Re-filter-lists)
 - [comss.one dns](https://www.comss.ru/page.php?id=7315)
-- [discord-voice-ips](https://github.com/GhostRooter0953/discord-voice-ips)
