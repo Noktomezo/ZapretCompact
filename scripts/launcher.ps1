@@ -1,11 +1,14 @@
-
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
   Write-Warning "You need to run this script as an Administrator!"
   & cmd.exe /c "pause"
   exit 1
 }
 
-Import-Module "$(Split-Path -Parent $MyInvocation.MyCommand.Path)\config.ps1"
+$CONFIG_PATH = Join-Path $PSScriptRoot "config.ps1"
+$CONFIG = & $CONFIG_PATH
+$NSSM_EXE = $CONFIG.NSSM_EXE
+$WINWS_EXE = $CONFIG.WINWS_EXE
+$WINWS_ARGS = $CONFIG.WINWS_ARGS
 
 if (-not $args[0]) {
   Write-Host "No action specified. Use 'JustStart', 'ServiceInstall', or 'ServiceRemove'." -ForegroundColor Red
