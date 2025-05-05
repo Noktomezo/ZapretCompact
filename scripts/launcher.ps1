@@ -1,3 +1,10 @@
+
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+  Write-Warning "You need to run this script as an Administrator!"
+  & cmd.exe /c "pause"
+  exit 1
+}
+
 Import-Module "$(Split-Path -Parent $MyInvocation.MyCommand.Path)\config.ps1"
 
 if (-not $args[0]) {
