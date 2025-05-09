@@ -14,9 +14,9 @@ PREV_DOMAIN_COUNT=$(wc -l < "${OUTPUT_FILE}")
 
 echo "🔍 Извлечение доменов из API..."
 sort -u \
-  <(curl -L -H "Accept-Encoding: gzip" -k --fail --retry 4 -# "${ANTIFILTER_MAIN_LIST}") \
-  <(curl -L -H "Accept-Encoding: gzip" -k --fail --retry 4 -# "${ANTIFILTER_COMMUNITY_LIST}") \
-  <(curl -L -H "Accept-Encoding: gzip" -k --fail --retry 4 -# "${RE_FILTER_LIST}") \
+  <(curl -L -k --fail --retry 4 -# "${ANTIFILTER_MAIN_LIST}") \
+  <(curl -L -k --fail --retry 4 -# "${ANTIFILTER_COMMUNITY_LIST}") \
+  <(curl -L -k --fail --retry 4 -# "${RE_FILTER_LIST}") \
   > "${OUTPUT_FILE}"
 
 NEW_DOMAIN_COUNT=$(wc -l < "${OUTPUT_FILE}")
