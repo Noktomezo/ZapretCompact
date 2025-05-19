@@ -18,7 +18,7 @@ return @{
     "--filter-tcp=80 --hostlist-auto=`"$RUSSIA_BLOCKED_LIST`" --dpi-desync=fake,fakedsplit --dpi-desync-autottl=2 --dpi-desync-fooling=md5sig --new",
     "--filter-tcp=443 --hostlist=`"$DISCORD_LIST`" --dpi-desync=fake,split --dpi-desync-autottl=5 --dpi-desync-repeats=6 --dpi-desync-fooling=badseq --dpi-desync-fake-tls-mod=rnd,dupsid,sni=www.cloudflare.com --new",
     "--filter-tcp=443 --hostlist=`"$YOUTUBE_LIST`" --dpi-desync=fake,multidisorder --dpi-desync-split-pos=1,midsld --dpi-desync-repeats=11 --dpi-desync-fooling=md5sig --dpi-desync-fake-tls-mod=rnd,dupsid,sni=www.google.com --new",
-    "--filter-tcp=443 --hostlist-auto=`"$RUSSIA_BLOCKED_LIST`" --dpi-desync=fake,multidisorder --dpi-desync-split-pos=1,midsld --dpi-desync-repeats=11 --dpi-desync-fooling=md5sig --dpi-desync-fake-tls-mod=rnd,dupsid,sni=www.google.com --new",
+    "--filter-tcp=443 --hostlist-auto=`"$RUSSIA_BLOCKED_LIST`" --dpi-desync=split --dpi-desync-split-pos=1 --dpi-desync-autottl --dpi-desync-fooling=badseq --dpi-desync-repeats=8 --new",
     "--filter-udp=443 --hostlist=`"$RUSSIA_BLOCKED_LIST`" --dpi-desync=fake --dpi-desync-repeats=11 --dpi-desync-fake-quic=`"$QUIC_BIN`" --new",
     "--filter-udp=50000-50099 --filter-l7=discord,stun --dpi-desync=fake"
   ) -Join " "
