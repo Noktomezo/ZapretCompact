@@ -2,7 +2,6 @@ $ROOT = Split-Path -Parent $PSScriptROOT
 $FILES = Join-Path $ROOT 'files'
 $DOMAINS = Join-Path $ROOT 'hosts'
 
-$AUTOHOSTLIST = Join-Path $DOMAINS 'autohostlist.txt'
 $RUSSIA_BLOCKED_LIST = Join-Path $DOMAINS 'russia-blocked.txt'
 $DISCORD_LIST = Join-Path $DOMAINS 'discord.txt'
 $YOUTUBE_LIST = Join-Path $DOMAINS 'youtube.txt'
