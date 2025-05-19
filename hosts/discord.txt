@@ -15,7 +15,7 @@ discord.media
 discord.new
 discord.store
 discord.tools
-discordactivities.com
+discordapp.io
 discordapp.com
 discordapp.net
 media.discordapp.net
@@ -26,5 +26,8 @@ discordcdn.com
 discordmerch.com
 discordpartygames.com
 discordsays.com
-discordsez.com
 discordstatus.com
+airhorn.solutions
+airhornbot.com
+bigbeans.solutions
+watchanimeattheoffice.com

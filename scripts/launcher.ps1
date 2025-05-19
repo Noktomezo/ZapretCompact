@@ -1,7 +1,12 @@
-if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-  Write-Warning "You need to run this script as an Administrator!"
-  & cmd.exe /c "pause"
-  exit 1
+If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
+  try {
+    Start-Process PowerShell.exe -ArgumentList ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`"" -f $PSCommandPath) -Verb RunAs
+    exit 1
+  }
+  catch {
+    Write-Error "Failed to run as Administrator. Please rerun with elevated privileges."
+    exit 1
+  }
 }
 
 $CONFIG_PATH = Join-Path $PSScriptRoot "config.ps1"
@@ -34,10 +39,8 @@ $service_status = & $NSSM_EXE status ZapretCompact 2>&1
 switch ($args[0]) {
   "JustStart" {
     if ($service_status -eq "SERVICE_RUNNING") {
-      Start-Process powershell.exe {
-        Write-Host "ZapretCompact is already running as a service." -ForegroundColor Yellow
-        & cmd.exe /c "pause"
-      }
+      Write-Warning "ZapretCompact is already running as a service." -ForegroundColor Yellow
+      & cmd.exe /c "pause"
     }
     else {
       Start-Process -WindowStyle Minimized $WINWS_EXE $WINWS_ARGS
@@ -46,11 +49,11 @@ switch ($args[0]) {
   }
   "ServiceInstall" {
     if ($service_status -eq "SERVICE_RUNNING") {
-      Write-Host "ZapretCompact is already installed as a service." -ForegroundColor Yellow
+      Write-Warning "ZapretCompact is already installed as a service."
       & cmd.exe /c "pause"
     }
     elseif (Get-Process -Name "winws" -ErrorAction SilentlyContinue) {
-      Write-Host "ZapretCompact currently running as a standalone app, close it first" -ForegroundColor Yellow
+      Write-Warning "ZapretCompact currently running as a standalone app, close it first"
       & cmd.exe /c "pause"
     }
     else {
