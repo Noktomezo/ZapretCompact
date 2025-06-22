@@ -5,18 +5,25 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "${SCRIPT_DIR}")"
 OUTPUT_FILE="${ROOT_DIR}/hosts/russia-blocked.txt"
 
-ANTIFILTER_MAIN_LIST="https://antifilter.download/list/domains.lst"
-ANTIFILTER_COMMUNITY_LIST="https://community.antifilter.download/list/domains.lst"
-RE_FILTER_LIST="https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/domains_all.lst"
+
+ANTIFILTER_IPRESOLVE_IPS_LIST="https://antifilter.download/list/ipresolve.lst"
+ANTIFILTER_ALLYOUNEED_IPS_LIST="https://antifilter.download/list/allyouneed.lst"
+ANTIFILTER_COMMUNITY_IPS_LIST="https://community.antifilter.download/list/community.lst"
+RE_FILTER_IPSUM_LIST="https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst"
+
+# ANTIFILTER_MAIN_LIST="https://antifilter.download/list/domains.lst"
+# ANTIFILTER_COMMUNITY_LIST="https://community.antifilter.download/list/domains.lst"
+# RE_FILTER_LIST="https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/domains_all.lst"
 
 mkdir -p "$(dirname "${OUTPUT_FILE}")"
 PREV_DOMAIN_COUNT=$(wc -l < "${OUTPUT_FILE}")
 
-echo "🔍 Извлечение доменов из API..."
+echo "🔍 Извлечение IP-адресов из API..."
 sort -u \
-  <(curl -L -k --fail --retry 4 -# "${ANTIFILTER_MAIN_LIST}") \
-  <(curl -L -k --fail --retry 4 -# "${ANTIFILTER_COMMUNITY_LIST}") \
-  <(curl -L -k --fail --retry 4 -# "${RE_FILTER_LIST}") \
+  <(curl -L -k --fail --retry 4 -# "${ANTIFILTER_IPRESOLVE_IPS_LIST}") \
+  <(curl -L -k --fail --retry 4 -# "${ANTIFILTER_ALLYOUNEED_IPS_LIST}") \
+  <(curl -L -k --fail --retry 4 -# "${ANTIFILTER_COMMUNITY_IPS_LIST}") \
+  <(curl -L -k --fail --retry 4 -# "${RE_FILTER_IPSUM_LIST}") \
   > "${OUTPUT_FILE}"
 
 NEW_DOMAIN_COUNT=$(wc -l < "${OUTPUT_FILE}")
@@ -27,9 +34,9 @@ NEW_DOMAIN_COUNT=$(wc -l < "${OUTPUT_FILE}")
 }
 
 if [ "${PREV_DOMAIN_COUNT}" -ne "${NEW_DOMAIN_COUNT}" ]; then
-  echo "💾 Обновление данных: ${PREV_DOMAIN_COUNT} → ${NEW_DOMAIN_COUNT} доменов"
+  echo "💾 Обновление IP-адресов: ${PREV_DOMAIN_COUNT} → ${NEW_DOMAIN_COUNT}"
 else
-  echo "ℹ️ Количество доменов не изменилось: ${NEW_DOMAIN_COUNT}"
+  echo "ℹ️ Количество IP-адресов не изменилось: ${NEW_DOMAIN_COUNT}"
 fi
 
 echo "✅ Обновление черного списка успешно завершено."
