@@ -25,10 +25,9 @@ git clone --depth=1 https://github.com/Noktomezo/ZapretCompact.git
 
 ## 🧐 Дополнительно
 В дополнении к обходу DPI можно так же вернуть доступ к некоторым доменам/ресурсам, которые блокируются "с той стороны" без использования сторонних приложений и VPN, настроив DNS от:
-
 - [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
-- [XBox DNS](https://xbox-dns.ru/)
-- [dns.malw.link](https://info.dns.malw.link/)
+- [XBox DNS](https://xbox-dns.ru/) (не является аффилированным продуктом Microsoft)
+- [dns.malw.link](https://info.dns.malw.link/) ⭐
 
 **Разблокируемые сервисы:**
 - ИИ-сервисы (ChatGPT, Sora, Microsoft Copilot, GitHub Copilot, xAI Grok, Google Gemini, Claude AI)
@@ -46,3 +45,4 @@ git clone --depth=1 https://github.com/Noktomezo/ZapretCompact.git
 - [re:filter](https://github.com/1andrevich/Re-filter-lists)
 - [comss.one dns](https://www.comss.ru/page.php?id=7315)
 - [xbox-dns.ru](https://xbox-dns.ru)
+- [dns.malw.link](https://info.dns.malw.link/)
