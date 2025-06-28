@@ -4,7 +4,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     exit 1
   }
   catch {
-    Write-Error "Failed to run as Administrator. Please rerun with elevated privileges."
+    Write-Error "Failed to run as Administrator. Please re-run with elevated privileges."
     exit 1
   }
 }
