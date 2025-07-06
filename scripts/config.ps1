@@ -3,9 +3,10 @@ $FILES = Join-Path $ROOT 'files'
 $DOMAINS = Join-Path $ROOT 'hosts'
 
 $RUSSIA_BLOCKED_IPSET = Join-Path $DOMAINS 'russia-blocked-ipset.txt'
-# $DISCORD_LIST = Join-Path $DOMAINS 'discord.txt'
 $YOUTUBE_LIST = Join-Path $DOMAINS 'youtube.txt'
 $QUIC_BIN = Join-Path $FILES 'quic_initial_www_google_com.bin'
+$GOOGLE_TLS_BIN = Join-Path $FILES 'tls_clienthello_www_google_com.bin'
+$IANA_TLS_BIN = Join-Path $FILES 'tls_clienthello_iana_org.bin'
 
 return @{
   # Экзешники
@@ -16,10 +17,10 @@ return @{
   WINWS_ARGS = @(
     "--wf-tcp=80,443 --wf-udp=443,50000-50099",
     "--filter-tcp=80 --ipset=`"$RUSSIA_BLOCKED_IPSET`" --dpi-desync=fake,split2 --dpi-desync-autottl=2 --dpi-desync-fooling=md5sig --new",
-    # "--filter-tcp=443 --hostlist=`"$DISCORD_LIST`" --dpi-desync=fake,split --dpi-desync-autottl=5 --dpi-desync-repeats=6 --dpi-desync-fooling=badseq --dpi-desync-fake-tls-mod=rnd,dupsid,sni=cloudflare.com --new",
-    "--filter-tcp=443 --hostlist=`"$YOUTUBE_LIST`" --dpi-desync=fake,multidisorder --dpi-desync-split-pos=1,midsld --dpi-desync-repeats=22 --dpi-desync-fooling=md5sig --dpi-desync-fake-tls-mod=rnd,dupsid,sni=www.google.com--new",
-    "--filter-tcp=443 --ipset=`"$RUSSIA_BLOCKED_IPSET`" --dpi-desync=split --dpi-desync-split-pos=1 --dpi-desync-autottl --dpi-desync-fooling=badseq --dpi-desync-repeats=8 --new",
-    "--filter-udp=443 --ipset=`"$RUSSIA_BLOCKED_IPSET`" --dpi-desync=fake --dpi-desync-repeats=11 --dpi-desync-fake-quic=`"$QUIC_BIN`" --new",
+    "--filter-tcp=443 --hostlist=`"$YOUTUBE_LIST`" --dpi-desync=split2 --dpi-desync-split-seqovl=681 --dpi-desync-split-seqovl-pattern=`"$GOOGLE_TLS_BIN`" --new",
+    "--filter-tcp=443 --ipset=`"$RUSSIA_BLOCKED_IPSET`" --dpi-desync=syndata,multisplit --dpi-desync-fake-syndata=`"$IANA_TLS_BIN`" --dpi-desync-split-pos=1 --new",
+    "--filter-udp=443 --hostlist=`"$YOUTUBE_LIST`" --dpi-desync=fake --dpi-desync-repeats=11 --dpi-desync-fake-quic=`"$QUIC_BIN`" --new",
+    "--filter-udp=443 --ipset=`"$RUSSIA_BLOCKED_IPSET`" --dpi-desync=ipfrag2 --dpi-desync-ipfrag-pos-udp=8 --new",
     "--filter-udp=50000-50099 --filter-l7=discord,stun --dpi-desync=fake --dpi-desync-fake-discord=0x00 --dpi-desync-fake-stun=0x00"
   ) -Join " "
 }
