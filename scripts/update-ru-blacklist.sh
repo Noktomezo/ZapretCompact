@@ -5,10 +5,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "${SCRIPT_DIR}")"
 OUTPUT_FILE="${ROOT_DIR}/hosts/russia-blocked-ipset.txt"
 
-ANTIFILTER_IPRESOLVE_IPS_LIST="https://antifilter.download/list/ipresolve.lst"
-ANTIFILTER_ALLYOUNEED_IPS_LIST="https://antifilter.download/list/allyouneed.lst"
-ANTIFILTER_COMMUNITY_IPS_LIST="https://community.antifilter.download/list/community.lst"
-RE_FILTER_IPSUM_LIST="https://raw.githubusercontent.com/1andrevich/Re-filter-lists/refs/heads/main/ipsum.lst"
+RU_BLOCKED_IPSET="https://cdn.jsdelivr.net/gh/runetfreedom/russia-blocked-geoip@release/text/ru-blocked.txt"
+RU_BLOCKED_COMMUNITY_IPSET="https://cdn.jsdelivr.net/gh/runetfreedom/russia-blocked-geoip@release/text/ru-blocked-community.txt"
+RE_FILTER_IPSET="https://cdn.jsdelivr.net/gh/runetfreedom/russia-blocked-geoip@release/text/re-filter.txt"
 
 download_list() {
   local url="$1"
@@ -23,10 +22,9 @@ PREV_DOMAIN_COUNT=$(wc -l <"${OUTPUT_FILE}")
 echo "Извлечение IP-адресов из API..."
 
 sort -u -S 50% \
-  <(download_list "${ANTIFILTER_IPRESOLVE_IPS_LIST}") \
-  <(download_list "${ANTIFILTER_ALLYOUNEED_IPS_LIST}") \
-  <(download_list "${ANTIFILTER_COMMUNITY_IPS_LIST}") \
-  <(download_list "${RE_FILTER_IPSUM_LIST}") \
+  <(download_list "${RU_BLOCKED_IPSET}") \
+  <(download_list "${RU_BLOCKED_COMMUNITY_IPSET}") \
+  <(download_list "${RE_FILTER_IPSET}") \
   >"${OUTPUT_FILE}"
 
 NEW_DOMAIN_COUNT=$(wc -l <"${OUTPUT_FILE}")
