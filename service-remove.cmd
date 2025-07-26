@@ -3,4 +3,4 @@
 powershell ^
   -ExecutionPolicy Bypass ^
   -NoProfile ^
-  "& '%~dp0scripts\launcher.ps1' ServiceRemove" ^
+  "& '%~dp0scripts\launcher.ps1' ServiceRemove"
