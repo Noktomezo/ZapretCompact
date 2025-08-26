@@ -89,7 +89,7 @@ jobs:
           REMOVED="${{ steps.commit_changes.outputs.diff_removed }}"
 
           if [[ "$ADDED" -gt 0 || "$REMOVED" -gt 0 ]]; then
-            RELEASE_NOTES="$RELEASE_NOTES"\n\n'"➕ Добавлено \`$ADDED\`"\n'"➖ Удалено \`$REMOVED\`"
+            RELEASE_NOTES="$RELEASE_NOTES"\\n\\n'"➕ Добавлено \`$ADDED\`"\\n'"➖ Удалено \`$REMOVED\`"
           fi
 
           gh release create "$RELEASE_TAG" "$ARCHIVE_NAME" \
