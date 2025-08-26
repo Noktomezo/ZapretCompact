@@ -66,7 +66,7 @@ jobs:
         if: steps.commit_changes.outputs.changes_made == 'true'
         run: |
           REPO_NAME="${GITHUB_REPOSITORY##*/}"
-          RELEASE_DATE=$(date +"%d.%m.%Y %H:%M")
+          RELEASE_DATE=$(TZ="Europe/Moscow" date +"%d.%m.%Y %H:%M")
           ARCHIVE_NAME="${REPO_NAME}.zip"
           RELEASE_NAME="${REPO_NAME} [${RELEASE_DATE}]"
 
@@ -75,7 +75,7 @@ jobs:
           echo "ARCHIVE_NAME=$ARCHIVE_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
           echo "RELEASE_DATE=$RELEASE_DATE" >> $GITHUB_ENV
-          echo "RELEASE_TAG=v$(date +"%d.%m.%Y-%H%M")" >> $GITHUB_ENV
+          echo "RELEASE_TAG=v$(TZ="Europe/Moscow" date +"%d.%m.%Y-%H%M")" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         if: steps.commit_changes.outputs.changes_made == 'true'
