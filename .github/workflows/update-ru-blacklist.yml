@@ -56,7 +56,7 @@ jobs:
         run: |
           REPO_NAME="${GITHUB_REPOSITORY##*/}"
           RELEASE_DATE=$(date +"%Y-%m-%d")
-          ARCHIVE_NAME="${REPO_NAME}_${RELEASE_DATE}.zip"
+          ARCHIVE_NAME="${REPO_NAME}.zip"
           RELEASE_NAME="${REPO_NAME} [${RELEASE_DATE}]"
 
           zip -r "$ARCHIVE_NAME" files/ hosts/ scripts/ service-install.cmd service-remove.cmd start.cmd
