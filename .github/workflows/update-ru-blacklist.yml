@@ -70,7 +70,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          CURRENT_DATE=$(date +"%d.%m.%Y %H:%M")
+
           gh release create "$RELEASE_TAG" "$ARCHIVE_NAME" \
             --title "$RELEASE_NAME" \
-            --notes "✨ Автоматическое обновление `$(date +"%d.%m.%Y %H:%M")`" \
+            --notes "✨ Автоматическое обновление \`$CURRENT_DATE\`" \
             --latest
