@@ -91,8 +91,8 @@ jobs:
           if [[ "$ADDED" -gt 0 || "$REMOVED" -gt 0 ]]; then
             RELEASE_NOTES="$RELEASE_NOTES
 
-            ➕ Добавлено \`$ADDED\`
-            ➖ Удалено \`$REMOVED\`"
+            🟢 Добавлено \`$ADDED\`
+            🔴 Удалено \`$REMOVED\`"
           fi
 
           gh release create "$RELEASE_TAG" "$ARCHIVE_NAME" \
