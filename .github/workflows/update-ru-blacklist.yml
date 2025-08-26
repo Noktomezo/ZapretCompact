@@ -34,6 +34,17 @@ jobs:
             echo "changes_made=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected, committing and pushing"
+
+            if git diff --staged --name-only | grep -q "hosts/russia-blocked-ipset.txt"; then
+              ADDED=$(git diff --staged hosts/russia-blocked-ipset.txt | grep "^+" | grep -v "^+++" | wc -l)
+              REMOVED=$(git diff --staged hosts/russia-blocked-ipset.txt | grep "^-" | grep -v "^---" | wc -l)
+              echo "diff_added=$ADDED" >> $GITHUB_OUTPUT
+              echo "diff_removed=$REMOVED" >> $GITHUB_OUTPUT
+            else
+              echo "diff_added=0" >> $GITHUB_OUTPUT
+              echo "diff_removed=0" >> $GITHUB_OUTPUT
+            fi
+
             git commit -m "chore: update blacklist"
             git pull --rebase
             git push -f -u origin HEAD:${{ github.ref }}
@@ -71,7 +82,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          RELEASE_NOTES="✨ Автоматическое обновление адресов \`$RELEASE_DATE\`"
+
+          # Добавляем информацию о diff если есть изменения в файле
+          ADDED="${{ steps.commit_changes.outputs.diff_added }}"
+          REMOVED="${{ steps.commit_changes.outputs.diff_removed }}"
+
+          if [[ "$ADDED" -gt 0 || "$REMOVED" -gt 0 ]]; then
+            RELEASE_NOTES="$RELEASE_NOTES"\n\n'"➕ Добавлено \`$ADDED\`"\n'"➖ Удалено \`$REMOVED\`"
+          fi
+
           gh release create "$RELEASE_TAG" "$ARCHIVE_NAME" \
             --title "$RELEASE_NAME" \
-            --notes "✨ Автоматическое обновление \`$RELEASE_DATE\`" \
+            --notes "$RELEASE_NOTES" \
             --latest
