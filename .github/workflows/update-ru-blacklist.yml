@@ -72,5 +72,5 @@ jobs:
         run: |
           gh release create "$RELEASE_TAG" "$ARCHIVE_NAME" \
             --title "$RELEASE_NAME" \
-            --notes "Automated release created on $(date)" \
+            --notes "✨ Автоматическое обновление `$(date +"%d.%m.%Y %H:%M")`" \
             --latest
