@@ -3,7 +3,6 @@ on:
   schedule:
     - cron: "5 3,9,15,21 * * *"
   workflow_dispatch:
-
 jobs:
   update-blacklist:
     runs-on: ubuntu-latest
@@ -24,13 +23,54 @@ jobs:
         run: ./scripts/update-ru-blacklist.sh
 
       - name: Commit and push if changed
+        id: commit_changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
           git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
-          git diff --quiet && git diff --staged --quiet || (
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes detected"
+            echo "changes_made=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected, committing and pushing"
             git commit -m "chore: update blacklist"
             git pull --rebase
             git push -f -u origin HEAD:${{ github.ref }}
-          )
+            echo "changes_made=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Cleanup releases
+        if: steps.commit_changes.outputs.changes_made == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release list \
+            | awk -F '\t' '{print $3}' \
+            | while read -r line; do
+              gh release delete --cleanup-tag -y "$line"
+            done
+
+      - name: Create release archive
+        if: steps.commit_changes.outputs.changes_made == 'true'
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          RELEASE_DATE=$(date +"%Y-%m-%d")
+          ARCHIVE_NAME="${REPO_NAME}_${RELEASE_DATE}.zip"
+          RELEASE_NAME="${REPO_NAME} [${RELEASE_DATE}]"
+
+          zip -r "$ARCHIVE_NAME" files/ hosts/ scripts/ service-install.cmd service-remove.cmd start.cmd
+
+          echo "ARCHIVE_NAME=$ARCHIVE_NAME" >> $GITHUB_ENV
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "RELEASE_TAG=v$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        if: steps.commit_changes.outputs.changes_made == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$RELEASE_TAG" "$ARCHIVE_NAME" \
+            --title "$RELEASE_NAME" \
+            --notes "Automated release created on $(date)" \
+            --latest
