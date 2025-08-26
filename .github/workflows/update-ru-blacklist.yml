@@ -63,6 +63,7 @@ jobs:
 
           echo "ARCHIVE_NAME=$ARCHIVE_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "RELEASE_DATE=$RELEASE_DATE" >> $GITHUB_ENV
           echo "RELEASE_TAG=v$(date +"%d.%m.%Y-%H%M")" >> $GITHUB_ENV
 
       - name: Create GitHub Release
@@ -70,9 +71,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          CURRENT_DATE=$(date +"%d.%m.%Y %H:%M")
-
           gh release create "$RELEASE_TAG" "$ARCHIVE_NAME" \
             --title "$RELEASE_NAME" \
-            --notes "✨ Автоматическое обновление \`$CURRENT_DATE\`" \
+            --notes "✨ Автоматическое обновление \`$RELEASE_DATE\`" \
             --latest
