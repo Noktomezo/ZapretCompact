@@ -44,13 +44,11 @@ RICOCHET в сериях игр Call Of Duty будет просто закры�
 
 **Разблокируемые сервисы:**
 
-- ИИ-сервисы (ChatGPT, Sora, Microsoft Copilot, GitHub Copilot, xAI Grok, Google
-  Gemini, Claude AI)
-- Игры (Brawl Stars, Doom Eternal, ...)
-- Сервисы (Discord, YouTube, Proton, ...)
+- ИИ-сервисы (ChatGPT и Sora, Microsoft Copilot, GitHub Copilot, xAI Grok, Google Gemini и Claude AI)
+- Игры (Clash of Clans, Brawl Stars, Doom Eternal, ...)
 
 Полный список разблокируемых ресурсов для каждого DNS сервера ищите на их
-официальных сайтах.
+официальных сайтах/ресурсах.
 
 ## 👾 Источники
 
