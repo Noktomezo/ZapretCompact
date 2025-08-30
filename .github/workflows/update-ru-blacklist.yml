@@ -65,27 +65,25 @@ jobs:
       - name: Create release archive
         if: steps.commit_changes.outputs.changes_made == 'true'
         run: |
-          set -euo pipefail
-
           REPO_NAME="${GITHUB_REPOSITORY##*/}"
           RELEASE_DATE=$(TZ="Europe/Moscow" date +"%d.%m.%Y %H:%M")
           ARCHIVE_NAME="${REPO_NAME}.zip"
           RELEASE_NAME="${REPO_NAME} [${RELEASE_DATE}]"
-          TMP_PARENT_DIR=$(mktemp -d)
-          TMP_DIR="$TMP_PARENT_DIR/$REPO_NAME"
 
-          trap 'rm -rf "$TMP_PARENT_DIR"' EXIT
+          mkdir -p "temp_archive/$REPO_NAME"
 
-          mkdir -p "$TMP_DIR"
+          cp -r files/ "temp_archive/$REPO_NAME/"
+          cp -r hosts/ "temp_archive/$REPO_NAME/"
+          cp -r scripts/ "temp_archive/$REPO_NAME/"
+          cp service-install.cmd "temp_archive/$REPO_NAME/"
+          cp service-remove.cmd "temp_archive/$REPO_NAME/"
+          cp start.cmd "temp_archive/$REPO_NAME/"
 
-          cp -a files "$TMP_DIR/" 2>/dev/null || true
-          cp -a hosts "$TMP_DIR/" 2>/dev/null || true
-          cp -a scripts "$TMP_DIR/" 2>/dev/null || true
-          cp -a service-install.cmd "$TMP_DIR/" 2>/dev/null || true
-          cp -a service-remove.cmd "$TMP_DIR/" 2>/dev/null || true
-          cp -a start.cmd "$TMP_DIR/" 2>/dev/null || true
+          cd temp_archive
+          zip -r "../$ARCHIVE_NAME" "$REPO_NAME/"
+          cd ..
 
-          (cd "$TMP_PARENT_DIR" && zip -r "../$ARCHIVE_NAME" "$REPO_NAME")
+          rm -rf temp_archive
 
           echo "ARCHIVE_NAME=$ARCHIVE_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
