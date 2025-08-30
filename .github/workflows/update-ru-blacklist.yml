@@ -65,12 +65,27 @@ jobs:
       - name: Create release archive
         if: steps.commit_changes.outputs.changes_made == 'true'
         run: |
+          set -euo pipefail
+
           REPO_NAME="${GITHUB_REPOSITORY##*/}"
           RELEASE_DATE=$(TZ="Europe/Moscow" date +"%d.%m.%Y %H:%M")
           ARCHIVE_NAME="${REPO_NAME}.zip"
           RELEASE_NAME="${REPO_NAME} [${RELEASE_DATE}]"
+          TMP_PARENT_DIR=$(mktemp -d)
+          TMP_DIR="$TMP_PARENT_DIR/$REPO_NAME"
 
-          zip -r "$ARCHIVE_NAME" files/ hosts/ scripts/ service-install.cmd service-remove.cmd start.cmd
+          trap 'rm -rf "$TMP_PARENT_DIR"' EXIT
+
+          mkdir -p "$TMP_DIR"
+
+          cp -a files "$TMP_DIR/" 2>/dev/null || true
+          cp -a hosts "$TMP_DIR/" 2>/dev/null || true
+          cp -a scripts "$TMP_DIR/" 2>/dev/null || true
+          cp -a service-install.cmd "$TMP_DIR/" 2>/dev/null || true
+          cp -a service-remove.cmd "$TMP_DIR/" 2>/dev/null || true
+          cp -a start.cmd "$TMP_DIR/" 2>/dev/null || true
+
+          (cd "$TMP_PARENT_DIR" && zip -r "../$ARCHIVE_NAME" "$REPO_NAME")
 
           echo "ARCHIVE_NAME=$ARCHIVE_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
@@ -84,7 +99,6 @@ jobs:
         run: |
           RELEASE_NOTES="✨ Автоматическое обновление адресов \`$RELEASE_DATE\`"
 
-          # Добавляем информацию о diff если есть изменения в файле
           ADDED="${{ steps.commit_changes.outputs.diff_added }}"
           REMOVED="${{ steps.commit_changes.outputs.diff_removed }}"
 
