@@ -27,10 +27,14 @@ function Start-WinwsMonitoring {
 
     & sc.exe stop WinDivert >$null 2>&1
     & sc.exe delete WinDivert >$null 2>&1
+    & sc.exe stop monkey >$null 2>&1
+    & sc.exe delete monkey >$null 2>&1
   }
   catch {
     & sc.exe stop WinDivert >$null 2>&1
     & sc.exe delete WinDivert >$null 2>&1
+    & sc.exe stop monkey >$null 2>&1
+    & sc.exe delete monkey >$null 2>&1
   }
 }
 
