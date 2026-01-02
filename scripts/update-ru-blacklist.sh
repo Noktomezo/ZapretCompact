@@ -3,7 +3,7 @@ set -e -u -o pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "${SCRIPT_DIR}")"
-OUTPUT_FILE="${ROOT_DIR}/hosts/russia-blocked-ipset.txt"
+OUTPUT_FILE="${ROOT_DIR}/hosts/ipset-russia-blocked.txt"
 
 RU_BLOCKED_IPSET="https://cdn.jsdelivr.net/gh/runetfreedom/russia-blocked-geoip@release/text/ru-blocked.txt"
 RU_BLOCKED_COMMUNITY_IPSET="https://cdn.jsdelivr.net/gh/runetfreedom/russia-blocked-geoip@release/text/ru-blocked-community.txt"
