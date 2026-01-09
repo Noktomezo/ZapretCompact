@@ -35,7 +35,7 @@ jobs:
           else
             echo "Changes detected, committing and pushing"
 
-            if git diff --staged --name-only | grep -q "hosts/russia-blocked-ipset.txt"; then
+            if git diff --staged --name-only | grep -q "hosts/ipset-russia-blocked.txt"; then
               ADDED=$(git diff --staged hosts/russia-blocked-ipset.txt | grep "^+" | grep -v "^+++" | wc -l)
               REMOVED=$(git diff --staged hosts/russia-blocked-ipset.txt | grep "^-" | grep -v "^---" | wc -l)
               echo "diff_added=$ADDED" >> $GITHUB_OUTPUT
