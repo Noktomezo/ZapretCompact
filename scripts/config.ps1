@@ -50,7 +50,7 @@ $HTTPS_STRATEGY_RUSSIA_BLOCKED = @"
   --dpi-desync-fake-tls-mod=rnd,dupsid,sni=ggpht.com
   --dpi-desync-split-seqovl=2108
   --dpi-desync-split-seqovl-pattern=`"$GOOGLE_TLS_BIN`"
-  "--dpi-desync-fooling=badsum,badseq"
+  --dpi-desync-fooling=badsum,badseq
 "@
 
 $HTTPS_STRATEGY_DISCORD_VOICE = @"
