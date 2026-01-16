@@ -22,6 +22,12 @@ jobs:
       - name: Run update blacklist script
         run: ./scripts/update-ru-blacklist.sh
 
+      - name: Compress blacklist
+        run: |
+          sudo apt-get update && sudo apt-get install -y aggregate
+          aggregate -q < hosts/ipset-russia-blocked.txt > hosts/ipset-russia-blocked.tmp
+          mv hosts/ipset-russia-blocked.tmp hosts/ipset-russia-blocked.txt
+
       - name: Commit and push if changed
         id: commit_changes
         run: |
