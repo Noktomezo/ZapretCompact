@@ -8,7 +8,7 @@ $HOSTS_GOOGLE = Join-Path $DOMAINS 'hosts-google.txt'
 $GOOGLE_QUIC_BIN = Join-Path $FILES 'quic_initial_www_google_com.bin'
 $GOOGLE_TLS_BIN = Join-Path $FILES 'tls_clienthello_www_google_com.bin'
 
-function Normalize-Strategy {
+function Format-Strategy {
   param([string]$multilineStrategy)
 
   $lines = $multilineStrategy -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne "" }
@@ -40,7 +40,7 @@ $HTTPS_STRATEGY_GOOGLE = @"
 "@
 
 $HTTPS_STRATEGY_RUSSIA_BLOCKED = @"
-  --filter-tcp=443
+  --filter-tcp=443,2053,2083,2087,2096,8443
   --ipset=`"$IPSET_RUSSIA_BLOCKED`"
   --dpi-desync=hostfakesplit
   --dpi-desync-hostfakesplit-mod=host=web.max.ru
@@ -48,15 +48,6 @@ $HTTPS_STRATEGY_RUSSIA_BLOCKED = @"
   --dpi-desync-split-seqovl=726
   --dpi-desync-fooling=badsum,badseq
   --dpi-desync-badseq-increment=0
-"@
-
-$HTTPS_STRATEGY_DISCORD_VOICE = @"
-  --filter-tcp=2053,2083,2087,2096,8443
-  --hostlist-domains=discord.media
-  --dpi-desync=multisplit
-  --dpi-desync-split-seqovl=652
-  --dpi-desync-split-pos=2
-  --dpi-desync-split-seqovl-pattern=`"$GOOGLE_TLS_BIN`"
 "@
 
 $QUIC_STRATEGY_RUSSIA_BLOCKED = @"
@@ -81,7 +72,7 @@ $QUIC_OTHER = @"
   --dpi-desync-fake-unknown-udp=`"$GOOGLE_QUIC_BIN`"
 "@
 
-$FULL_STRATEGY = Normalize-Strategy @"
+$FULL_STRATEGY = Format-Strategy @"
   --wf-tcp=$TCP_PORTS --wf-udp=$UDP_PORTS
 
   $HTTP_STRATEGY_RUSSIA_BLOCKED
@@ -91,9 +82,6 @@ $FULL_STRATEGY = Normalize-Strategy @"
 
   --new 
   $HTTPS_STRATEGY_RUSSIA_BLOCKED
-
-  --new 
-  $HTTPS_STRATEGY_DISCORD_VOICE
 
   --new 
   $QUIC_STRATEGY_RUSSIA_BLOCKED
