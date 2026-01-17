@@ -12,7 +12,6 @@ function Normalize-Strategy {
   param([string]$multilineStrategy)
 
   $lines = $multilineStrategy -split "`n" | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne "" }
-
   return $lines -join " "
 }
 
@@ -27,22 +26,9 @@ $HTTP_STRATEGY_RUSSIA_BLOCKED = @"
   --dpi-desync-fooling=badsum
 "@
 
-# $HTTPS_STRATEGY_GOOGLE = @"
-#   --filter-tcp=443
-#   --hostlist=`"$HOSTS_GOOGLE`"
-#   --dpi-desync=fake,multisplit
-#   --dpi-desync-split-pos=2,sld
-#   --dpi-desync-fake-tls=0x0F0F0F0F
-#   --dpi-desync-fake-tls=`"$GOOGLE_TLS_BIN`"
-#   --dpi-desync-fake-tls-mod=rnd,dupsid,sni=ggpht.com
-#   --dpi-desync-split-seqovl=2108
-#   --dpi-desync-split-seqovl-pattern=`"$GOOGLE_TLS_BIN`"
-#   "--dpi-desync-fooling=badsum,badseq"
-# "@
-
-$HTTPS_STRATEGY_RUSSIA_BLOCKED = @"
+$HTTPS_STRATEGY_GOOGLE = @"
   --filter-tcp=443
-  --ipset=`"$IPSET_RUSSIA_BLOCKED`"
+  --hostlist=`"$HOSTS_GOOGLE`"
   --dpi-desync=fake,multisplit
   --dpi-desync-split-pos=2,sld
   --dpi-desync-fake-tls=0x0F0F0F0F
@@ -51,6 +37,17 @@ $HTTPS_STRATEGY_RUSSIA_BLOCKED = @"
   --dpi-desync-split-seqovl=2108
   --dpi-desync-split-seqovl-pattern=`"$GOOGLE_TLS_BIN`"
   --dpi-desync-fooling=badsum,badseq
+"@
+
+$HTTPS_STRATEGY_RUSSIA_BLOCKED = @"
+  --filter-tcp=443
+  --ipset=`"$IPSET_RUSSIA_BLOCKED`"
+  --dpi-desync=hostfakesplit
+  --dpi-desync-hostfakesplit-mod=host=web.max.ru
+  --dpi-desync-hostfakesplit-midhost=host-2
+  --dpi-desync-split-seqovl=726
+  --dpi-desync-fooling=badsum,badseq
+  --dpi-desync-badseq-increment=0
 "@
 
 $HTTPS_STRATEGY_DISCORD_VOICE = @"
@@ -88,6 +85,9 @@ $FULL_STRATEGY = Normalize-Strategy @"
   --wf-tcp=$TCP_PORTS --wf-udp=$UDP_PORTS
 
   $HTTP_STRATEGY_RUSSIA_BLOCKED
+
+  --new
+  $HTTPS_STRATEGY_GOOGLE
 
   --new 
   $HTTPS_STRATEGY_RUSSIA_BLOCKED
