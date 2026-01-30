@@ -15,11 +15,11 @@ function Format-Strategy {
   return $lines -join " "
 }
 
-$TCP_PORTS = "80,443,2053,2083,2087,2096,8443"
-$UDP_PORTS = "443,1024-65535"
+$TCP_PORTS = "80,443,2052,2053,2082,2083,2086,2087,2095,2096,5222,8080,8443,8880"
+$UDP_PORTS = "88,443,500,1024-65535"
 
 $HTTP_STRATEGY_RUSSIA_BLOCKED = @"
-  --filter-tcp=80
+  --filter-tcp=80,2052,2082,2086,2095,8080,8880
   --ipset=`"$IPSET_RUSSIA_BLOCKED`"
   --dpi-desync=fake,fakedsplit
   --dpi-desync-autottl=2
@@ -40,7 +40,7 @@ $HTTPS_STRATEGY_GOOGLE = @"
 "@
 
 $HTTPS_STRATEGY_RUSSIA_BLOCKED = @"
-  --filter-tcp=443,2053,2083,2087,2096,8443
+  --filter-tcp=443,2053,2083,2087,2096,5222,8443
   --ipset=`"$IPSET_RUSSIA_BLOCKED`"
   --dpi-desync=hostfakesplit
   --dpi-desync-hostfakesplit-mod=host=web.max.ru
@@ -58,14 +58,14 @@ $QUIC_STRATEGY_RUSSIA_BLOCKED = @"
 "@
 
 $QUIC_STRATEGY_DISCORD_VOICE = @"
-  --filter-udp=19294-19344,50000-50100
+  --filter-udp=1400,19294-19344,50000-50100
   --filter-l7=discord,stun
   --dpi-desync=fake
   --dpi-desync-repeats=6
 "@
 
 $QUIC_OTHER = @"
-  --filter-udp=1024-19293,19345-49999,50101-65535
+  --filter-udp=88,500,1024-65535
   --dpi-desync=fake
   --dpi-desync-cutoff=d2
   --dpi-desync-any-protocol=1
