@@ -64,3 +64,5 @@
 - [comss.one dns](https://www.comss.ru/page.php?id=7315)
 - [xbox-dns.ru](https://xbox-dns.ru)
 - [dns.malw.link](https://info.dns.malw.link/)
+- [dns.mafioznik.xyz](https://freedom.mafioznik.xyz/)
+- [dns.astracat.ru](https://astracat.ru/)
