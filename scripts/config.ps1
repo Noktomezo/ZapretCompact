@@ -7,6 +7,7 @@ $HOSTS_GOOGLE = Join-Path $DOMAINS 'hosts-google.txt'
 
 $GOOGLE_QUIC_BIN = Join-Path $FILES 'quic_initial_www_google_com.bin'
 $GOOGLE_TLS_BIN = Join-Path $FILES 'tls_clienthello_www_google_com.bin'
+$MAX_TLS_BIN = Join-Path $FILES 'max.bin'
 
 function Format-Strategy {
   param([string]$multilineStrategy)
@@ -42,11 +43,13 @@ $HTTPS_STRATEGY_GOOGLE = @"
 $HTTPS_STRATEGY_RUSSIA_BLOCKED = @"
   --filter-tcp=443,2053,2083,2087,2096,5222,8443
   --ipset=`"$IPSET_RUSSIA_BLOCKED`"
-  --dpi-desync=hostfakesplit
-  --dpi-desync-hostfakesplit-mod=host=web.max.ru
-  --dpi-desync-hostfakesplit-midhost=host-2
-  --dpi-desync-split-seqovl=726
-  --dpi-desync-fooling=badsum,badseq
+  --dpi-desync=fake,multisplit
+  --dpi-desync-split-seqovl=654
+  --dpi-desync-split-pos=1
+  --dpi-desync-fooling=badseq,badsum
+  --dpi-desync-repeats=8
+  --dpi-desync-split-seqovl-pattern=`"$MAX_TLS_BIN`"
+  --dpi-desync-fake-tls=`"$MAX_TLS_BIN`"
   --dpi-desync-badseq-increment=0
 "@
 
@@ -57,6 +60,7 @@ $QUIC_STRATEGY_RUSSIA_BLOCKED = @"
   --dpi-desync-fake-quic=`"$GOOGLE_QUIC_BIN`"
 "@
 
+# (and telegram media actually)
 $QUIC_STRATEGY_DISCORD_VOICE = @"
   --filter-udp=1400,19294-19344,50000-50100
   --filter-l7=discord,stun
@@ -80,16 +84,16 @@ $FULL_STRATEGY = Format-Strategy @"
   --new
   $HTTPS_STRATEGY_GOOGLE
 
-  --new 
+  --new
   $HTTPS_STRATEGY_RUSSIA_BLOCKED
 
-  --new 
+  --new
   $QUIC_STRATEGY_RUSSIA_BLOCKED
 
-  --new 
+  --new
   $QUIC_STRATEGY_DISCORD_VOICE
 
-  --new 
+  --new
   $QUIC_OTHER
 "@
 
