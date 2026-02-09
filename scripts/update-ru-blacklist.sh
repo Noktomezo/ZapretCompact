@@ -5,13 +5,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "${SCRIPT_DIR}")"
 OUTPUT_FILE="${ROOT_DIR}/hosts/ipset-russia-blocked.txt"
 
-RU_BLOCKED_IPSET="https://cdn.jsdelivr.net/gh/runetfreedom/russia-blocked-geoip@release/text/ru-blocked.txt"
-RU_BLOCKED_COMMUNITY_IPSET="https://cdn.jsdelivr.net/gh/runetfreedom/russia-blocked-geoip@release/text/ru-blocked-community.txt"
-RE_FILTER_IPSET="https://cdn.jsdelivr.net/gh/runetfreedom/russia-blocked-geoip@release/text/re-filter.txt"
+RU_BLOCKED_IPSET="https://github.com/Noktomezo/RussiaFancyLists/raw/refs/heads/main/lists/ipsets/full-smart-and-cdn.lst"
 
 download_list() {
   local url="$1"
-  curl -L -k --fail --retry 4 --retry-delay 2 --retry-all-errors --connect-timeout 10 -# "${url}"
+  curl -f#SL -m 120 --connect-timeout 10 --retry 4 "${url}"
 }
 
 mkdir -p "$(dirname "${OUTPUT_FILE}")"
@@ -20,12 +18,7 @@ mkdir -p "$(dirname "${OUTPUT_FILE}")"
 PREV_DOMAIN_COUNT=$(wc -l <"${OUTPUT_FILE}")
 
 echo "Извлечение IP-адресов из API..."
-
-sort -u -S 50% \
-  <(download_list "${RU_BLOCKED_IPSET}") \
-  <(download_list "${RU_BLOCKED_COMMUNITY_IPSET}") \
-  <(download_list "${RE_FILTER_IPSET}") \
-  >"${OUTPUT_FILE}"
+sort -uV <(download_list "${RU_BLOCKED_IPSET}") >"${OUTPUT_FILE}"
 
 NEW_DOMAIN_COUNT=$(wc -l <"${OUTPUT_FILE}")
 
