@@ -43,9 +43,14 @@ $HTTPS_STRATEGY_GOOGLE = @"
 $HTTPS_STRATEGY_RUSSIA_BLOCKED = @"
   --filter-l7=tls
   --ipset=`"$ZAPRET_IP_USER`"
-  --dpi-desync=split2
-  --dpi-desync-split-seqovl=681
+  --dpi-desync=fake,multisplit
+  --dpi-desync-repeats=3
+  --dpi-desync-split-seqovl=654
+  --dpi-desync-split-pos=1
+  --dpi-desync-fooling=badseq,badsum
   --dpi-desync-split-seqovl-pattern=`"$STUN_BIN`"
+  --dpi-desync-fake-tls=`"$STUN_BIN`"
+  --dpi-desync-badseq-increment=0
 "@
 
 $QUIC_STRATEGY_RUSSIA_BLOCKED = @"
