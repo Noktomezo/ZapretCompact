@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "${SCRIPT_DIR}")"
 OUTPUT_FILE="${ROOT_DIR}/hosts/zapret-ip-user.txt"
 
-RU_BLOCKED_IPSET="https://github.com/Noktomezo/RussiaFancyLists/raw/refs/heads/main/lists/ipsets/full-smart-and-cdn.lst"
+RU_BLOCKED_IPSET="https://github.com/Noktomezo/RussiaFancyLists/raw/refs/heads/main/lists/ipsets/full-and-cdn.lst"
 
 download_list() {
   local url="$1"
