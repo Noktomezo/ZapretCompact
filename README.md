@@ -33,25 +33,15 @@
 что при появлении каких либо "странностей" при использовании системы/запуске игр
 первым делом отключайте данную программу.
 
-## 🧐 Дополнительно
+## 🤝 Попробуйте также
 
-В дополнении к обходу DPI можно так же вернуть доступ к некоторым
-доменам/ресурсам, которые блокируются "с той стороны" без использования
-сторонних приложений и VPN, настроив DNS от:
-
-- [dns.comss.one](https://www.comss.ru/page.php?id=7315)
-- [xbox-dns.ru](https://xbox-dns.ru/)
-- [dns.malw.link](https://info.dns.malw.link/)
-- [dns.mafioznik.xyz](https://freedom.mafioznik.xyz/)
-- [dns.astracat.ru](https://astracat.ru/)
-
-**Разблокируемые сервисы:**
-
-- ИИ-сервисы (`ChatGPT` и `Sora`, `Microsoft Copilot`, `GitHub Copilot`, `xAI Grok`, `Google Gemini` и `Claude AI`)
-- Игры (`Clash of Clans`, `Brawl Stars`, `Doom Eternal`, серия игр `Battlefield` и т.д.)
-- Последние обновления `Windows`
-
-Полный список разблокируемых ресурсов и инструкцию по установке для каждого DNS сервера ищите на их официальных источниках.
+- **[ZapretInteractive](https://github.com/Noktomezo/ZapretInteractive)** - все тот же старый-добрый zapret в обновленной упаковке - красивый, простой и интуитивный интерфейс без кучи батников и с предустановленными стратегиями
+- **SNI Прокси** (DNS провайдеры, предоставляющие доступ к заблокированным "с той стороны" сервисам (ИИ-сервисы, игры и обновления)):
+  - **[dns.comss.one](https://www.comss.ru/page.php?id=7315)**
+  - **[xbox-dns.ru](https://xbox-dns.ru/)**
+  - **[dns.malw.link](https://info.dns.malw.link/)**
+  - **[dns.mafioznik.xyz](https://freedom.mafioznik.xyz/)**
+  - **[dns.astracat.ru](https://astracat.ru/)**
 
 ## 👾 Источники
 
